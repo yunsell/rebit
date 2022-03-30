@@ -35,21 +35,21 @@ def get_query():
 
 # query = get_query()
 # query = query[1]
-query = "벚꽃 엔딩"
+query = "푸틴"
 
 from Crawler.crawlingModule import crawlingModule
 
 modules = crawlingModule()
 
-# modules.youtube_comment_Cralwer(query)
+modules.youtube_comment_Crawler(query)
 modules.twitter_Crawler(query)
-# modules.daum_Crawler(query)
-# modules.naver_Crawler(query)
-# modules.naver_blog_content_Crawler(query)
-# modules.daum_blog_comment_Crawler(query)
-# modules.naver_blog_comment_Crawler(query)
-# modules.naver_cafe_comment_Crawler(query)
-# modules.quit_driver()
+modules.daum_Crawler(query)
+modules.naver_Crawler(query)
+modules.naver_blog_content_Crawler(query)
+modules.daum_blog_comment_Crawler(query)
+modules.naver_blog_comment_Crawler(query)
+modules.naver_cafe_comment_Crawler(query)
+modules.quit_driver()
 
 
 from Crawler.openapiRequest.twitter_api import request_twitter_REAL
@@ -58,42 +58,42 @@ request_twitter_REAL(query)
 
 
 
-# from service.analysisService import AnalysisService
-# print(query, 'query')
-# analService = AnalysisService(query, 30, 11111, ['naver_blog'])
+from service.analysisService import AnalysisService
+print(query, 'query')
+analService = AnalysisService(query, 30, 11111, ['naver_blog'])
+
+realtime = analService.request_body_realtime()
+print(realtime, "realtime")
+periodic = analService.request_body_periodic()
+print(periodic, "periodic")
+
+
+from GPTserver.analysisGPT import repu_main
+
+
+text = ['이거 최악이에요', '너무 좋아요']
+result = repu_main(text)
+print(result, "result")
+
+from GPTserver.gptModule import insert_sentence_senti_detail_column
+
+insert_sentence_senti_detail_column()
+
+from service.modules.textAnalysisModule import textAnalysisModule
+from Crawler.openapiRequest.naver_api import get_naver
+from Crawler.openapiRequest.daum_api import get_daum
+
+# query = "닥터송+마케팅"
+
+sentence_list = list(map(lambda x:x[1].replace('...', ''), get_naver('blog', query)))
+sentence_list += list(map(lambda x: x[1].replace('...', ''), get_daum('blog', query)))
+sentence_list += list(map(lambda x: x[1].replace('...', ''), get_daum('cafe', query)))
+sentence_list += list(map(lambda x: x[1].replace('...', ''), get_naver('news', query)))
+
+# sentence_list += list(map(lambda x: x[1], get_twitter))
+textAnal = textAnalysisModule()
 #
-# realtime = analService.request_body_realtime()
-# print(realtime, "realtime")
-# periodic = analService.request_body_periodic()
-# print(periodic, "periodic")
-#
-#
-# from GPTserver.analysisGPT import repu_main
-#
-#
-# text = ['이거 최악이에요', '너무 좋아요']
-# result = repu_main(text)
-# print(result, "result")
-#
-# from GPTserver.gptModule import insert_sentence_senti_detail_column
-#
-# insert_sentence_senti_detail_column()
-#
-# from service.modules.textAnalysisModule import textAnalysisModule
-# from Crawler.openapiRequest.naver_api import get_naver
-# from Crawler.openapiRequest.daum_api import get_daum
-#
-# # query = "닥터송+마케팅"
-#
-# sentence_list = list(map(lambda x:x[1].replace('...', ''), get_naver('blog', query)))
-# sentence_list += list(map(lambda x: x[1].replace('...', ''), get_daum('blog', query)))
-# sentence_list += list(map(lambda x: x[1].replace('...', ''), get_daum('cafe', query)))
-# sentence_list += list(map(lambda x: x[1].replace('...', ''), get_naver('news', query)))
-#
-# # sentence_list += list(map(lambda x: x[1], get_twitter))
-# textAnal = textAnalysisModule()
-# #
-# result = textAnal.mostAppearedNoun(sentence_list, 15)
-# print(result, "result 최종")
-#
-# print(time.time() - start)
+result = textAnal.mostAppearedNoun(sentence_list, 15)
+print(result, "result 최종")
+
+print(time.time() - start)
