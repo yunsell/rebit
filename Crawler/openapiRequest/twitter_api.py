@@ -88,7 +88,7 @@ def get_url_twitter(query):
         try:
             sql = "INSERT INTO crawling_content (comment_seq, search_keyword, source, url, comment, author, commentdate, num_likes) VALUES (%s, %s, %s, %s, %s, %s, %s, %s) ON DUPLICATE KEY UPDATE num_likes=%s;"
 
-            db_connection.execute(sql, (tweet['id'], query, source, tweet['url'], tweet['content'], tweet['author'], tweet['postdate'].strftime("%Y-%m-%d"), tweet['num_likes'], tweet['num_likes']))
+            db_connection.execute(sql, (1, query, source, tweet['url'], tweet['content'], tweet['author'], tweet['postdate'].strftime("%Y-%m-%d"), tweet['num_likes'], tweet['num_likes']))
             print(tweet['url'], ' done')
         except Exception as e:
             print(e)
