@@ -4,6 +4,7 @@ from routes.analysisRouter import Analysis
 from routes.analysisLatest import Analysis_date
 from routes.analysisSimilarity import Analysis_similarity
 from routes.analysisMostAppear import Analysis_mostAppear
+from routes.test import Test
 
 app = Flask(__name__)  # Flask 객체 선언, 파라미터로 어플리케이션 패키지의 이름을 넣어줌.
 api = Api(app, version='1.0', title="rebit_nlp",
@@ -15,6 +16,7 @@ api.add_namespace(Analysis_date, '/latest') #오늘의 평판
 api.add_namespace(Analysis_similarity, '/relation') #관련도순
 api.add_namespace(Analysis_mostAppear, '/mostAppear') #연관어 빈도수 정렬
 # api.add_namespace(Document, '/document') #분석 보고서
+api.add_namespace(Test, '/test/<str>')
 
 if __name__ == "__main__":
     app.run(debug=True, host='0.0.0.0')
